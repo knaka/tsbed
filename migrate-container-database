@@ -26,4 +26,25 @@ user=$(jq -r ".services.${service}.environment.POSTGRES_USER" <<< "$config")
 db="$user"
 password=$(jq -r ".services.${service}.environment.POSTGRES_PASSWORD" <<< "$config")
 
-PGPASSWORD="$password" exec psql --host=127.0.0.1 --port="$port" --username="$user" "$db" "$@"
+dry_run_opt=
+
+optspec=":d"
+while getopts "${optspec}-:" optchar
+do
+  case "$optchar" in
+    d)
+      dry_run_opt=--dry-run
+      ;;
+    -)
+      case "$OPTARG" in
+        dry-run)
+          dry_run_opt=--dry-run
+          ;;
+      esac
+  esac
+done
+
+PGPASSWORD="$password" psqldef $dry_run_opt --file=schemafile.sql --host=127.0.0.1 --port="$port" --user="$user" "$db"
+
+npx prisma db pull
+npx prisma generate

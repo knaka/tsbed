@@ -1,3 +1,5 @@
 docker-compose.override.yaml
 node_modules
 .env
+prisma/client
+.idea
