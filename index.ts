@@ -10,7 +10,16 @@ const authorData: Prisma.authorsCreateInput = {
 }
 
 async function main() {
-  const allUsers = await pclient.authors.findMany()
+  // const allUsers = await pclient.authors.findMany()
+  const allUsers = await pclient.authors.findMany(
+    {
+      where: {
+        OR: {
+          name: "foo",
+        }
+      }
+    }
+  )
   console.log(allUsers)
 }
 main()

@@ -8,10 +8,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model authors {
+model Book {
+  id        Int    @id @default(autoincrement())
+  author_id Int
+  name      String
+  author    Author @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("books")
+}
+
+model Author {
   name       String
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
   id         Int      @id @default(autoincrement())
   email      String
+  books      Book[]
+
+  @@map("authors")
 }

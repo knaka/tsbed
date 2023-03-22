@@ -5,3 +5,9 @@ CREATE TABLE authors(
   created_at timestamp with time zone NOT NULL,
   updated_at timestamp with time zone NOT NULL
 );
+
+CREATE TABLE books(
+  id SERIAL PRIMARY KEY,
+  author_id int NOT NULL REFERENCES authors(id),
+  name text NOT NULL
+);
