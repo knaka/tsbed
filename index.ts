@@ -1,15 +1,16 @@
 import { Prisma, PrismaClient } from './prisma/client'
 
-const prisma = new PrismaClient()
+const pclient = new PrismaClient()
 
 const authorData: Prisma.authorsCreateInput = {
   name: 'Alice',
+  email: 'hoge@example.com',
   created_at: '',
   updated_at: '',
 }
 
 async function main() {
-  const allUsers = await prisma.authors.findMany()
+  const allUsers = await pclient.authors.findMany()
   console.log(allUsers)
 }
 main()
@@ -17,5 +18,5 @@ main()
     throw e
   })
   .finally(async () => {
-    await prisma.$disconnect()
+    await pclient.$disconnect()
   })
